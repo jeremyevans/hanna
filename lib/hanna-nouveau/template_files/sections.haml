@@ -1,86 +1,88 @@
-- section = values[:section]
-#section
-  - if section[:sectitle]
-    %h2= link_to section[:sectitle], section[:secsequence]
-    - if section[:seccomment]
-      .section-comment= section[:seccomment]
-      
-  - if section[:classlist] =~ /<li>/
-    #class-list
-      %h2 Classes and Modules
-      = section[:classlist]
-      
-  - unless section[:constants].empty?
-    #constants-list
-      %h2 Constants
-      .name-list
-        %table{ :summary => "Constants" }
-          - section[:constants].each do |const|
-            %tr.top-aligned-row.context-row
-              %td.context-item-name= const.name
-              %td =
-              %td.context-item-value= const.value
-              - if const.description then
-                %td &nbsp;
-                %td.context-item-desc= const.description
-                  
-  - unless section[:aliases].empty?
-    #aliases-list
-      %h2 External Aliases
-      .name-list
-        %table{ :summary => "Aliases" }
-          - section[:aliases].each do |alia|
-            %tr.top-aligned-row.context-row
-              %td.context-item-name= alia.name
-              %td -&gt;
-              %td.context-item-value= link_to alia.is_alias_for.name, "##{alia.is_alias_for.aref}"
-            - unless alia.description.empty?
+- unless values[:entry].classes_and_modules.empty?
+  #class-list
+    %h2 Classes and Modules
+    %ol
+      - (values[:entry].modules.sort + values[:entry].classes.sort).each do |mod|
+        %li= link_to mod.full_name, values[:entry].aref_to(mod.path)
+
+- values[:sections].sort_by{|s, h| s.title.to_s}.each do |section, h|
+  - constants, attributes, alias_types, method_types = h.values_at(:constants, :attributes, :alias_types, :method_types)
+  #section
+    - if section.title.to_s != ''
+      %h2 
+        %a{ :name =>section.aref }= section.title
+        - if section.comment
+          .section-comment= section.description
+        
+    - unless constants.empty?
+      #constants-list
+        %h2 Constants
+        .name-list
+          %table{ :summary => "Constants" }
+            - constants.each do |const|
               %tr.top-aligned-row.context-row
-                %td &nbsp;
-                %td.context-item-desc{ :colspan => "2" }
-                  = alia.description
-                  
-  - unless section[:attributes].empty?
-    #attribute-list
-      %h2.section-bar Attributes
-      .name-list
-        %table
-          - section[:attributes].each do |attrib|
-            %tr.top-aligned-row.context-row
-              %td.context-item-name
-                %a{:name => "method-#{attrib.html_name}"}=attrib.name
-              %td.context-item-value= attrib.rw ? "[#{attrib.rw}]" : '&nbsp;'
-              %td.context-item-desc~ sanitize_code_blocks(attrib.description)
-  
-  - unless section[:method_list].empty?
-    #methods
-      - section[:method_list].group_by { |x| [x.visibility, x.type].map(&:to_s).map(&:capitalize).join(" ") }.each do |type, list|
-        - unless list.empty?
-          %h2== #{type} methods
-          
-          - list.each do |method|
-            .method{ :id => "method-#{method.aref}", :class => "#{type.gsub(/\s+/, '-')}".downcase }
-              %a{ :name => method.aref }
-              .synopsis
-                - method_html = capture_haml do
-                  - if method.call_seq
-                    %span.name
-                      - method.call_seq.split(/\r?\n/).each do |seq|
-                        %div=seq
-                  - else
-                    %span.name= method.name
-                    %span.arguments= method.params
-                -#- if method[:codeurl]
-                  -#%a.method-signature{ :href => method[:codeurl], :onclick => "popupCode(this.href); return false", :target => "Code" }
-                    -#= method_html
-                -#- else
-                = method_html
-              - if method.description
-                .description
-                  ~ sanitize_code_blocks method.description
-              - if method.markup_code
-                .source
-                  - name = "#{method.aref}-source"
-                  %a.source-toggle{ :href => "#", :onclick => "toggleCode('#{name}'); return false" }
-                    [show source]
-                  ~ "<pre id='#{name}'>#{method.markup_code}</pre>"
+                %td.context-item-name= const.name
+                %td =
+                %td.context-item-value= const.value
+                - if const.description then
+                  %td &nbsp;
+                  %td.context-item-desc= const.description
+                    
+    - unless alias_types.empty?
+      - alias_types.each do |type, aliases|
+        #aliases-list
+          %h2 #{type} Aliases
+          .name-list
+            %table{ :summary => "#{type} Aliases" }
+              - aliases.each do |alia|
+                %tr.top-aligned-row.context-row
+                  %td.context-item-name= alia.name
+                  %td -&gt;
+                  %td.context-item-value= link_to alia.is_alias_for.name, "##{alia.is_alias_for.aref}"
+                  - unless alia.description.empty?
+                    %td.context-item-desc= alia.description
+                    
+    - unless attributes.empty?
+      #attribute-list
+        %h2.section-bar Attributes
+        .name-list
+          %table
+            - attributes.each do |attrib|
+              %tr.top-aligned-row.context-row
+                %td.context-item-name
+                  %a{:name => attrib.aref}=attrib.name
+                %td.context-item-value= attrib.rw ? "[#{attrib.rw}]" : '&nbsp;'
+                %td.context-item-desc~ sanitize_code_blocks(attrib.description)
+    
+    - unless method_types.empty?
+      #methods
+        - method_types.each do |type, list|
+          - unless list.empty?
+            %h2== #{type} methods
+            
+            - list.each do |method|
+              .method{ :id => "method-#{method.aref}", :class => "#{type.gsub(/\s+/, '-')}".downcase }
+                %a{ :name => method.aref }
+                .synopsis
+                  - method_html = capture_haml do
+                    - if method.call_seq
+                      %span.name
+                        - method.call_seq.split(/\r?\n/).each do |seq|
+                          %div=seq
+                    - else
+                      %span.name= method.name
+                      %span.arguments= method.params
+                  -#- if method[:codeurl]
+                    -#%a.method-signature{ :href => method[:codeurl], :onclick => "popupCode(this.href); return false", :target => "Code" }
+                      -#= method_html
+                  -#- else
+                  = method_html
+                - if method.description
+                  .description
+                    ~ sanitize_code_blocks method.description
+                - if method.markup_code
+                  .source
+                    - name = "#{method.aref}-source"
+                    %a.source-toggle{ :href => "#", :onclick => "toggleCode('#{name}'); return false" }
+                      [show source]
+                    ~ "<pre id='#{name}'>#{method.markup_code}</pre>"

@@ -1,4 +1,6 @@
-- methods = values[:entry].method_list + values[:entry].attributes
+- entry = values[:entry]
+- sections = values[:sections].keys if values.has_key?(:sections)
+- methods = entry.method_list + entry.attributes
 - unless methods.empty?
   #method-list
     %h2 Methods
@@ -26,27 +28,29 @@
               - else
                 %li= method.name
 
-- if values[:entry].requires or values[:entry].sections or values[:entry].includes
+- if entry.requires or sections or entry.includes
   #context
-    - unless values[:entry].requires.empty?
+    - unless entry.requires.empty?
       #requires
         %h2 Required files
         %ol
-          - values[:entry].requires.each do |req|
+          - entry.requires.each do |req|
             %li= req.name
 
-    -# FIXME reenable
-    -#- if values[:entry].sections
-      -##contents
-        -#%h2 Contents
-        -#%ol
-          -#- values[:entry].sections.each do |item|
-            -#%li= link_to values[:secname], values[:href]
+    - if sections && (sections.length > 1 || sections.first.title.to_s != '')
+      #contents
+        %h2 Contents
+        %ol
+          - sections.sort_by{|s| s.title.to_s}.each do |section|
+            %li= link_to section.title, "##{section.aref}"
 
-    - unless values[:entry].includes.empty?
+    - unless entry.includes.empty?
       #includes
         %h2 Included modules
         %ol
-          - values[:entry].includes.each do |inc|
-            %li= inc.name
+          - entry.includes.each do |inc|
+            - if (mod = inc.module).is_a?(String)
+              %li= inc.name
+            - else
+              %li= link_to inc.name, entry.aref_to(mod.path)
 

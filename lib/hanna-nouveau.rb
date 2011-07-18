@@ -160,6 +160,19 @@ class RDoc::Generator::Hanna
     @classes.each do |klass|
       outfile = classfile(klass)
       stylesheet = Pathname.new(STYLE_OUT).relative_path_from(outfile.dirname)
+      sections = {}
+      klass.each_section do |section, constants, attributes|
+        method_types = []
+        alias_types = []
+        klass.methods_by_type(section).each do |type, visibilities|
+          visibilities.each do |visibility, methods|
+            aliases, methods = methods.partition{|x| x.is_alias_for}
+            method_types << ["#{visibility.to_s.capitalize} #{type.to_s.capitalize}", methods.sort] unless methods.empty?
+            alias_types << ["#{visibility.to_s.capitalize} #{type.to_s.capitalize}", aliases.sort] unless aliases.empty?
+          end
+        end
+        sections[section] = {:constants=>constants, :attributes=>attributes, :method_types=>method_types, :alias_types=>alias_types}
+      end
 
       values = { 
         :file => klass.path, 
@@ -169,20 +182,13 @@ class RDoc::Generator::Hanna
         :title => klass.full_name,
         :list_title => nil,
         :description => klass.description,
-        :section => {
-          # FIXME linkify
-          :classlist => '<ol>' + klass.classes_and_modules.inject('') { |x,y| x << '<li>' + y.name + '</li>' } + '</ol>',
-          :constants => klass.constants,
-          :aliases   => klass.method_list.select { |x| x.is_alias_for }.sort,
-          :attributes => klass.attributes.sort,
-          :method_list => klass.method_list.select { |x| !x.is_alias_for }.sort
-        }
+        :sections => sections
       } 
 
       result = with_layout(values) do 
-        class_page.to_html(binding, :values => values) do 
-          method_list_page.to_html(binding, :values => values) +
-            sections_page.to_html(binding, :values => values)
+        h = {:values => values}
+        class_page.to_html(binding, h) do 
+          method_list_page.to_html(binding, h) + sections_page.to_html(binding, h)
         end
       end
 
