@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{hanna-nouveau}
-  s.version = "0.2.4"
+  s.version = "0.2.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Erik Hollensbe", "James Tucker", "Mislav Marohnic"]
@@ -53,7 +53,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rcov>, [">= 0"])
       s.add_development_dependency(%q<rdoc>, ["~> 3.1"])
       s.add_runtime_dependency(%q<haml>, ["= 3.0.25"])
-      s.add_runtime_dependency(%q<rdoc>, [">= 0"])
+      s.add_runtime_dependency(%q<rdoc>, ["~> 3.1"])
       s.add_development_dependency(%q<jeweler>, [">= 0"])
       s.add_development_dependency(%q<rake>, [">= 0"])
     else
@@ -62,7 +62,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<rcov>, [">= 0"])
       s.add_dependency(%q<rdoc>, ["~> 3.1"])
       s.add_dependency(%q<haml>, ["= 3.0.25"])
-      s.add_dependency(%q<rdoc>, [">= 0"])
+      s.add_dependency(%q<rdoc>, ["~> 3.1"])
       s.add_dependency(%q<jeweler>, [">= 0"])
       s.add_dependency(%q<rake>, [">= 0"])
     end
@@ -72,7 +72,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rcov>, [">= 0"])
     s.add_dependency(%q<rdoc>, ["~> 3.1"])
     s.add_dependency(%q<haml>, ["= 3.0.25"])
-    s.add_dependency(%q<rdoc>, [">= 0"])
+    s.add_dependency(%q<rdoc>, ["~> 3.1"])
     s.add_dependency(%q<jeweler>, [">= 0"])
     s.add_dependency(%q<rake>, [">= 0"])
   end
