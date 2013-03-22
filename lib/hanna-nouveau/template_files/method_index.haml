@@ -9,7 +9,5 @@
 %ol#search-results{ :class => 'methods', :style => 'display: none' }
 
 %ol#index-entries{ :class => 'methods' }
-  - values[:attributes].each do |entry|
-    %li= link_to_method entry, [classfile(entry.parent), "method-#{entry.html_name}"].join('#')
-  - values[:methods].each do |entry|
+  - (values[:attributes] + values[:methods]).uniq.each do |entry|
     %li= link_to_method entry, [classfile(entry.parent), entry.aref].join('#')
