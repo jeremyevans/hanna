@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
     "lib/hanna-nouveau/template_files/styles.sass",
     "lib/rdoc/discover.rb"
   ]
-  s.homepage = "https://github.com/rdoc/hanna-nouveau"
+  s.homepage = "https://github.com/jeremyevans/hanna-nouveau"
   s.licenses = ["MIT"]
   s.summary = "RDoc generator designed with simplicity, beauty and ease of browsing in mind"
   s.description = <<END

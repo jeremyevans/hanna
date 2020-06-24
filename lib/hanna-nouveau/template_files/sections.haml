@@ -70,7 +70,7 @@
                         - method.call_seq.split(/\r?\n/).each do |seq|
                           %div=seq
                     - else
-                      %span.name= method.name
+                      %span.name>= method.name
                       %span.arguments= method.params
                   -#- if method[:codeurl]
                     -#%a.method-signature{ :href => method[:codeurl], :onclick => "popupCode(this.href); return false", :target => "Code" }
