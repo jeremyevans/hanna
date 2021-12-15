@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
     "lib/hanna-nouveau/template_files/page.haml",
     "lib/hanna-nouveau/template_files/prototype-1.6.0.3.js",
     "lib/hanna-nouveau/template_files/sections.haml",
-    "lib/hanna-nouveau/template_files/styles.sass",
+    "lib/hanna-nouveau/template_files/styles.css",
     "lib/rdoc/discover.rb"
   ]
   s.homepage = "https://github.com/jeremyevans/hanna-nouveau"
@@ -37,7 +37,6 @@ on modern verions of RDoc, Haml, and Sass.
 END
 
   s.add_dependency('haml', [">= 4"])
-  s.add_dependency('sass')
   s.add_dependency('rdoc', [">= 4"])
 end
 

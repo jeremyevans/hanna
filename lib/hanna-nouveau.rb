@@ -13,7 +13,6 @@
 
 require 'pathname'
 require 'haml'
-require 'sass'
 require 'rdoc/rdoc' unless defined?(RDoc::Markup::ToHtml)
 require 'rdoc/generator'
 
@@ -47,7 +46,7 @@ class RDoc::Markup::ToHtml
 end
 
 class RDoc::Generator::Hanna 
-  STYLE            = 'styles.sass'
+  STYLE            = 'styles.css'
   LAYOUT           = 'layout.haml'
 
   INDEX_PAGE       = 'index.haml'
@@ -118,7 +117,7 @@ class RDoc::Generator::Hanna
       FileUtils.mkdir css_dir
     end
 
-    File.open(File.join(css_dir, 'style.css'), 'w') { |f| f << Sass::Engine.new(File.read(templjoin(STYLE))).to_css }
+    File.open(File.join(css_dir, 'style.css'), 'w') { |f| f << File.read(templjoin(STYLE)) }
   end
 
   # FIXME refactor
