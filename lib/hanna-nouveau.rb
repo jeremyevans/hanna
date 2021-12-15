@@ -21,6 +21,7 @@ class RDoc::Markup::ToHtml
   LIST_TYPE_TO_HTML[:LABEL] = ['<table class="rdoc-list label-list"><tbody>', '</tbody></table>']
   LIST_TYPE_TO_HTML[:NOTE]  = ['<table class="rdoc-list note-list"><tbody>',  '</tbody></table>']
 
+  alias list_item_start list_item_start
   def list_item_start(list_item, list_type)
     case list_type
     when :BULLET, :LALPHA, :NUMBER, :UALPHA then
@@ -32,6 +33,7 @@ class RDoc::Markup::ToHtml
     end
   end
 
+  alias list_end_for list_end_for
   def list_end_for(list_type)
     case list_type
     when :BULLET, :LALPHA, :NUMBER, :UALPHA then
