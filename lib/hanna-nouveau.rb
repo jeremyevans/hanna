@@ -14,7 +14,7 @@
 require 'pathname'
 require 'haml'
 require 'sass'
-require 'rdoc/rdoc'
+require 'rdoc/rdoc' unless defined?(RDoc::Markup::ToHtml)
 require 'rdoc/generator'
 
 class RDoc::Markup::ToHtml
