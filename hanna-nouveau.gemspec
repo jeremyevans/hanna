@@ -35,6 +35,11 @@ RDoc generator designed with simplicity, beauty and ease of browsing in mind
 Based on the original Hanna by Mislav, with many changes so it works
 on modern verions of RDoc, Haml, and Sass.
 END
+  s.metadata          = { 
+    'bug_tracker_uri'   => 'https://github.com/jeremyevans/hanna-nouveau/issues',
+    'mailing_list_uri'  => 'https://github.com/jeremyevans/hanna-nouveau/discussions',
+    "source_code_uri"   => 'https://github.com/jeremyevans/hanna-nouveau'
+  }
 
   s.add_dependency('haml', [">= 4"])
   s.add_dependency('rdoc', [">= 4"])
