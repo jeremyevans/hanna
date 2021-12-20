@@ -68,6 +68,8 @@ class RDoc::Generator::Hanna
   METHOD_INDEX_OUT = 'fr_method_index.html'
   STYLE_OUT        = File.join('css', 'style.css')
 
+  METHOD_SEARCH_JS = "method_search.js"
+
   DESCRIPTION = 'a HAML-based HTML generator that scales'
 
   # EPIC CUT AND PASTE TIEM NAO -- GG
@@ -128,6 +130,8 @@ class RDoc::Generator::Hanna
     generate_index(FILE_INDEX_OUT,   FILE_INDEX,   'File',   { :files => @files})
     generate_index(CLASS_INDEX_OUT,  CLASS_INDEX,  'Class',  { :classes => @classes })
     generate_index(METHOD_INDEX_OUT, METHOD_INDEX, 'Method', { :methods => @methods, :attributes => @attributes })
+
+    File.binwrite(outjoin(METHOD_SEARCH_JS), File.binread(templjoin(METHOD_SEARCH_JS)))
   end
 
   def generate_index(outfile, templfile, index_name, values)
@@ -298,21 +302,6 @@ class RDoc::Generator::Hanna
     end
   end
     
-  def build_javascript_search_index(entries)
-    result = "var search_index = [\n"
-    entries.each do |entry|
-      method_name = entry.name
-      module_name = entry.parent_name
-      # FIXME link
-      html = link_to_method(entry, [classfile(entry.parent), (entry.aref rescue "method-#{entry.html_name}")].join('#'))
-      result << "  { method: '#{method_name.downcase}', " +
-                      "module: '#{module_name.downcase}', " +
-                      "html: '#{html}' },\n"
-    end
-    result << "]"
-    result
-  end
-
   def link_to(text, url = nil, classname = nil)
     class_attr = classname ? ' class="%s"' % classname : ''
 
@@ -329,7 +318,7 @@ class RDoc::Generator::Hanna
   def link_to_method(entry, url = nil, classname = nil)
     method_name = entry.pretty_name rescue entry.name
     module_name = entry.parent_name rescue entry.name
-    link_to %Q(<span class="method_name">#{h method_name}</span> <span class="module_name">(#{h module_name})</span>), url, classname
+    link_to %Q(<span class="method_name" value="#{entry.name}">#{h method_name}</span> <span class="module_name">(#{h module_name})</span>), url, classname
   end
 
   def classfile(klass)

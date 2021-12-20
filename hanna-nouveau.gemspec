@@ -21,7 +21,6 @@ Gem::Specification.new do |s|
     "lib/hanna-nouveau/template_files/method_list.haml",
     "lib/hanna-nouveau/template_files/method_search.js",
     "lib/hanna-nouveau/template_files/page.haml",
-    "lib/hanna-nouveau/template_files/prototype-1.6.0.3.js",
     "lib/hanna-nouveau/template_files/sections.haml",
     "lib/hanna-nouveau/template_files/styles.css",
     "lib/rdoc/discover.rb"

@@ -1,13 +1,12 @@
 %h1= values[:list_title]
 
-%script{:type => 'text/javascript'}
-  = File.read(File.join(@templatedir, "prototype-1.6.0.3.js"))
-  = build_javascript_search_index(values[:methods] + values[:attributes])
-  = File.read(File.join(@templatedir, "method_search.js"))
-%form{:onsubmit => 'return performSearch()'}
-  %input{:type => 'text', :id => 'search', :class => 'untouched', :value => 'Enter search terms...'}
-%ol#search-results{ :class => 'methods', :style => 'display: none' }
+%form{:id => 'search_form'}
+  %input{:type => 'text', :id => 'search', :class => 'untouched', :placeholder => 'Enter search terms...', :autocomplete=>'off'}
+  %span{:class=>'clear_button', :id=>'clear_button'}
+    x
 
 %ol#index-entries{ :class => 'methods' }
   - (values[:attributes] + values[:methods]).uniq.each do |entry|
     %li= link_to_method entry, [classfile(entry.parent), entry.aref].join('#')
+
+%script{:type => 'text/javascript', :src => "method_search.js"}
