@@ -28,13 +28,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = "https://github.com/jeremyevans/hanna-nouveau"
   s.licenses = ["MIT"]
-  s.summary = "RDoc generator designed with simplicity, beauty and ease of browsing in mind"
-  s.description = <<END
-RDoc generator designed with simplicity, beauty and ease of browsing in mind
-
-Based on the original Hanna by Mislav, with many changes so it works
-on modern verions of RDoc, Haml, and Sass.
-END
+  s.description = s.summary = "RDoc generator designed with simplicity, beauty and ease of browsing in mind"
   s.metadata          = { 
     'bug_tracker_uri'   => 'https://github.com/jeremyevans/hanna-nouveau/issues',
     'mailing_list_uri'  => 'https://github.com/jeremyevans/hanna-nouveau/discussions',
