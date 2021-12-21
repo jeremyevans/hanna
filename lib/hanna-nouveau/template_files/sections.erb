@@ -1,0 +1,92 @@
+<%
+values = values[:values] if values[:values]
+unless values[:entry].classes_and_modules.empty? %><div id='class-list'>
+<h2>Classes and Modules</h2>
+<ol>
+<%   (values[:entry].modules.sort + values[:entry].classes.sort).each do |mod| %><li><%= link_to(mod.full_name, values[:entry].aref_to(mod.path)) %></li>
+<%   end %></ol>
+</div>
+<% end
+
+values[:sections].sort_by{|s, h| s.title.to_s}.each do |section, h|
+  constants, attributes, alias_types, method_types = h.values_at(:constants, :attributes, :alias_types, :method_types)
+%><div id='section'>
+<% if section.title.to_s != '' %><h2>
+<a name='<%=h section.aref %>'><%=h section.title %></a>
+<% if section.comment %><div class='section-comment'><%= section.description %></div>
+<% end %></h2> 
+<% end
+   unless constants.empty? %><div id='constants-list'>
+<h2>Constants</h2>
+<div class='name-list'>
+<table summary='Constants'>
+<%   constants.each do |const| %><tr class='top-aligned-row context-row'>
+<td class='context-item-name'><%= const.name %></td>
+<td>=</td>
+<td class='context-item-value'><%= const.value %></td>
+<%     if const.description %><td>&nbsp;</td>
+<td class='context-item-desc'><%= const.description %></td>
+<%     end %></tr>
+<%   end %></table>
+</div>
+</div>
+<% end
+   unless alias_types.empty?
+     alias_types.each do |type, aliases|
+     %><div id='aliases-list'>
+<h2><%= type %> Aliases</h2>
+<div class='name-list'>
+<table summary='<%= type %> Aliases'>
+<%     aliases.each do |alia| %><tr class='top-aligned-row context-row'>
+<td class='context-item-name'><%= alia.name %></td>
+<td>-&gt;</td>
+<td class='context-item-value'><%= link_to(alia.is_alias_for.name, "##{alia.is_alias_for.aref}") %></td>
+<%       unless alia.description.empty? %><td class='context-item-desc'><%= alia.description %></td>
+<%       end %></tr>
+<%     end %></table>
+</div>
+</div>
+<%   end
+   end
+   unless attributes.empty? %><div id='attribute-list'>
+<h2 class='section-bar'>Attributes</h2>
+<div class='name-list'>
+<table>
+<%   attributes.each do |attrib| %><tr class='top-aligned-row context-row'>
+<td class='context-item-name'>
+<a name='<%=h attrib.aref %>'><%= attrib.name %></a>
+</td>
+<td class='context-item-value'><%= attrib.rw ? "[#{attrib.rw}]" : '&nbsp;' %></td>
+<td class='context-item-desc'><%= sanitize_code_blocks(attrib.description) %></td>
+</tr>
+<%   end %></table>
+</div>
+</div>
+<% end
+   unless method_types.empty? %><div id='methods'>
+<%   method_types.each do |type, list| next if list.empty? %><h2><%= type %> methods</h2>
+<%     list.each do |method| %><div class='method <%= "#{type.gsub(/\s+/, '-')}".downcase %>' id='method-<%= method.aref %>'>
+<a name='<%= method.aref %>'></a>
+<div class='synopsis'>
+<%       if method.call_seq %><span class='name'>
+<%         method.call_seq.split(/\r?\n/).each do |seq| %><div><%= seq %></div>
+</span>
+<%         end
+         else %><span class='name'><%= method.name %></span><span class='arguments'><%= method.params %></span>
+
+<%       end %></div>
+<%       if method.description %><div class='description'>
+<%= sanitize_code_blocks(method.description) %>
+</div>
+<%       end
+         if method.markup_code
+           name = "#{method.aref}-source" %><div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;<%= name %>&#39;); return false'>
+[show source]
+</a>
+<pre id='<%= name %>'><%= method.markup_code %></pre>
+</div>
+<%       end %></div>
+<%     end 
+     end %></div>
+<% end %></div><% end %>

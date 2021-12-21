@@ -2,8 +2,7 @@
 
 Based on the original Hanna by Mislav.
 
-Hanna-nouveau is an RDoc generator that scales. It's implemented in Haml,
-making the sources clean and readable. It's built with simplicity, beauty
+Hanna-nouveau is an RDoc generator built with simplicity, beauty
 and ease of browsing in mind.
 
 Hanna-nouveau is distributed as a ruby gem:

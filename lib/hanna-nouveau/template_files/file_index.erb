@@ -1,0 +1,9 @@
+<h1>File Index</h1><% any_hidden = false %>
+<ol class='files' id='index-entries'>
+<% values[:files].each do |file|
+    hide = file.name =~ /\.rb$/
+    any_hidden = true if hide %><li<%= " class='other'" if hide %>><%= link_to(file.name, file.path) %></li>
+<% end %><% if any_hidden %><li>
+<a class='show' href='#' onclick='this.parentNode.parentNode.className += &quot; expanded&quot;; this.parentNode.removeChild(this); return false'>show all</a>
+</li><% end %>
+</ol>

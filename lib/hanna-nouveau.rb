@@ -12,7 +12,7 @@
 #   Michael Granger <ged@FaerieMUD.org>, who had maintained the original RDoc template
 
 require 'pathname'
-require 'haml'
+require 'erb'
 require 'rdoc/rdoc' unless defined?(RDoc::Markup::ToHtml)
 require 'rdoc/generator'
 
@@ -47,17 +47,17 @@ end
 
 class RDoc::Generator::Hanna 
   STYLE            = 'styles.css'
-  LAYOUT           = 'layout.haml'
+  LAYOUT           = 'layout.erb'
 
-  INDEX_PAGE       = 'index.haml'
-  CLASS_PAGE       = 'page.haml'
-  METHOD_LIST_PAGE = 'method_list.haml'
+  INDEX_PAGE       = 'index.erb'
+  CLASS_PAGE       = 'page.erb'
+  METHOD_LIST_PAGE = 'method_list.erb'
   FILE_PAGE        = CLASS_PAGE
-  SECTIONS_PAGE    = 'sections.haml'
+  SECTIONS_PAGE    = 'sections.erb'
 
-  FILE_INDEX       = 'file_index.haml'
-  CLASS_INDEX      = 'class_index.haml'
-  METHOD_INDEX     = 'method_index.haml'
+  FILE_INDEX       = 'file_index.erb'
+  CLASS_INDEX      = 'class_index.erb'
+  METHOD_INDEX     = 'method_index.erb'
 
   CLASS_DIR        = 'classes'
   FILE_DIR         = 'files'
@@ -70,7 +70,7 @@ class RDoc::Generator::Hanna
 
   METHOD_SEARCH_JS = "method_search.js"
 
-  DESCRIPTION = 'a HAML-based HTML generator that scales'
+  DESCRIPTION = 'RDoc generator designed with simplicity, beauty and ease of browsing in mind'
 
   # EPIC CUT AND PASTE TIEM NAO -- GG
   RDoc::RDoc.add_generator( self )
@@ -125,7 +125,7 @@ class RDoc::Generator::Hanna
   # FIXME refactor
   def generate_indexes
     @main_page_uri = @files.find { |f| f.name == @options.main_page }.path rescue ''
-    File.open(outjoin(INDEX_OUT), 'w') { |f| f << haml_file(templjoin(INDEX_PAGE)).to_html(binding) }
+    File.open(outjoin(INDEX_OUT), 'w') { |f| f << erb_template(templjoin(INDEX_PAGE)).to_html(binding) }
 
     generate_index(FILE_INDEX_OUT,   FILE_INDEX,   'File',   { :files => @files})
     generate_index(CLASS_INDEX_OUT,  CLASS_INDEX,  'Class',  { :classes => @classes })
@@ -140,7 +140,7 @@ class RDoc::Generator::Hanna
       :list_title => "#{index_name} Index"
     })
 
-    index = haml_file(templjoin(templfile))
+    index = erb_template(templjoin(templfile))
 
     File.open(outjoin(outfile), 'w') do |f| 
       f << with_layout(values) do
@@ -150,8 +150,8 @@ class RDoc::Generator::Hanna
   end
 
   def generate_file_files
-    file_page = haml_file(templjoin(FILE_PAGE))
-    method_list_page = haml_file(templjoin(METHOD_LIST_PAGE))
+    file_page = erb_template(templjoin(FILE_PAGE))
+    method_list_page = erb_template(templjoin(METHOD_LIST_PAGE))
 
     # FIXME non-Ruby files
     @files.each do |file|
@@ -185,9 +185,9 @@ class RDoc::Generator::Hanna
   end
 
   def generate_class_files
-    class_page       = haml_file(templjoin(CLASS_PAGE))
-    method_list_page = haml_file(templjoin(METHOD_LIST_PAGE))
-    sections_page    = haml_file(templjoin(SECTIONS_PAGE))
+    class_page       = erb_template(templjoin(CLASS_PAGE))
+    method_list_page = erb_template(templjoin(METHOD_LIST_PAGE))
+    sections_page    = erb_template(templjoin(SECTIONS_PAGE))
     # FIXME refactor
 
     @classes.each do |klass|
@@ -236,7 +236,7 @@ class RDoc::Generator::Hanna
   end
 
   def with_layout(values)
-    layout = haml_file(templjoin(LAYOUT))
+    layout = erb_template(templjoin(LAYOUT))
     layout.to_html(binding, :values => values) { yield }
   end
 
@@ -269,7 +269,7 @@ class RDoc::Generator::Hanna
   end
 
   def h(html)
-    CGI::escapeHTML(html)
+    CGI::escapeHTML(html.to_s)
   end
 
   # XXX may my sins be not visited upon my sons.
@@ -334,7 +334,23 @@ class RDoc::Generator::Hanna
     File.join(@templatedir, name)
   end
 
-  def haml_file(file)
-    Haml::Engine.new(File.read(file), :format => :html4)
+  class ERB < ::ERB
+    def to_html(binding, values = nil, &block)
+      local_values = {}
+      binding.local_variables.each do |lv|
+        local_values[lv] = binding.local_variable_get(lv)
+      end
+      binding.local_variable_set(:values, values) if values
+      binding.local_variable_set(:block, block) if block
+      html = result(binding)
+      local_values.each do |lv, val|
+        binding.local_variable_set(lv, val)
+      end
+      html
+    end
+  end
+
+  def erb_template(file)
+    ERB.new(File.read(file))
   end
 end 

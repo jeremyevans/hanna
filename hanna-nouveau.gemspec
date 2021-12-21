@@ -13,15 +13,15 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "lib/hanna-nouveau.rb",
-    "lib/hanna-nouveau/template_files/class_index.haml",
-    "lib/hanna-nouveau/template_files/file_index.haml",
-    "lib/hanna-nouveau/template_files/index.haml",
-    "lib/hanna-nouveau/template_files/layout.haml",
-    "lib/hanna-nouveau/template_files/method_index.haml",
-    "lib/hanna-nouveau/template_files/method_list.haml",
+    "lib/hanna-nouveau/template_files/class_index.erb",
+    "lib/hanna-nouveau/template_files/file_index.erb",
+    "lib/hanna-nouveau/template_files/index.erb",
+    "lib/hanna-nouveau/template_files/layout.erb",
+    "lib/hanna-nouveau/template_files/method_index.erb",
+    "lib/hanna-nouveau/template_files/method_list.erb",
     "lib/hanna-nouveau/template_files/method_search.js",
-    "lib/hanna-nouveau/template_files/page.haml",
-    "lib/hanna-nouveau/template_files/sections.haml",
+    "lib/hanna-nouveau/template_files/page.erb",
+    "lib/hanna-nouveau/template_files/sections.erb",
     "lib/hanna-nouveau/template_files/styles.css",
     "lib/rdoc/discover.rb"
   ]
@@ -34,7 +34,6 @@ Gem::Specification.new do |s|
     "source_code_uri"   => 'https://github.com/jeremyevans/hanna-nouveau'
   }
 
-  s.add_dependency('haml', [">= 4"])
   s.add_dependency('rdoc', [">= 4"])
 end
 
