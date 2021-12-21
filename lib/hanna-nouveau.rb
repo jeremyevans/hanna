@@ -119,13 +119,13 @@ class RDoc::Generator::Hanna
       FileUtils.mkdir css_dir
     end
 
-    File.open(File.join(css_dir, 'style.css'), 'w') { |f| f << File.read(templjoin(STYLE)) }
+    File.binwrite(File.join(css_dir, 'style.css'), File.read(templjoin(STYLE)))
   end
 
   # FIXME refactor
   def generate_indexes
     @main_page_uri = @files.find { |f| f.name == @options.main_page }.path rescue ''
-    File.open(outjoin(INDEX_OUT), 'w') { |f| f << erb_template(templjoin(INDEX_PAGE)).to_html(binding) }
+    File.binwrite(outjoin(INDEX_OUT), erb_template(templjoin(INDEX_PAGE)).to_html(binding))
 
     generate_index(FILE_INDEX_OUT,   FILE_INDEX,   'File',   { :files => @files})
     generate_index(CLASS_INDEX_OUT,  CLASS_INDEX,  'Class',  { :classes => @classes })
@@ -142,11 +142,7 @@ class RDoc::Generator::Hanna
 
     index = erb_template(templjoin(templfile))
 
-    File.open(outjoin(outfile), 'w') do |f| 
-      f << with_layout(values) do
-             index.to_html(binding, values)
-           end
-    end
+    File.binwrite(outjoin(outfile), with_layout(values){index.to_html(binding, values)})
   end
 
   def generate_file_files
@@ -180,7 +176,7 @@ class RDoc::Generator::Hanna
         FileUtils.mkdir_p dir
       end
 
-      File.open(outjoin(file.path), 'w') { |f| f << result }
+      File.binwrite(outjoin(file.path), result)
     end
   end
 
@@ -231,7 +227,7 @@ class RDoc::Generator::Hanna
         FileUtils.mkdir_p dir
       end
 
-      File.open(outfile, 'w') { |f| f << result }
+      File.binwrite(outfile, result)
     end
   end
 
