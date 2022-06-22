@@ -1,25 +1,11 @@
 = Hanna-nouveau
 
-Based on the original Hanna by Mislav.
-
 Hanna-nouveau is an RDoc generator built with simplicity, beauty
 and ease of browsing in mind.
 
-Hanna-nouveau is distributed as a ruby gem:
+== Installation
 
     gem install hanna-nouveau
-
-The template was created by {Mislav}[http://mislav.uniqpath.com/] and since then
-has seen contributions from:
-
-1. {Tony Strauss}[http://github.com/DesigningPatterns], who participated from
-   the early start and made tons of fixes and enhancements to the template;
-2. {Hongli Lai}[http://blog.phusion.nl/] with the search filter for methods.
-3. {Erik Hollensbe}[http://github.com/erikh] a serious refactoring and up to
-   date with RDoc 2.5.x and 3.x, now named 'hanna-nouveau'.
-4. {James Tucker}[http://github.com/raggi] minor cleanups for Erik.
-5. {Jeremy Evans}[http://github.com/jeremyevans] RDoc 4 support, maintenance
-   since 2014.
 
 == Usage
 
@@ -33,48 +19,24 @@ This will make RDoc always use hanna-nouveau unless it is explicitly overridden.
 
 == Integrating with RubyGems
 
-Another neat trick is to put the following line in your .gemrc, this will make
+If you put the following line in your .gemrc, this will make
 RubyGems use Hanna for all rdoc generation:
 
     rdoc: -f hanna
 
-This will make RubyGems use Hanna when generating documentation for installed
-gems. Remember, if you wish to have all your gems be formatted in hanna:
+After doing this, if you wish to have documentation for all your installed gems
+to be formatted in hanna:
 
     gem rdoc --all --overwrite
 
-The first time. To easily browse your newly created documentation, use:
-
-    gem server
-
 == Rake task
 
-For repeated generation of API docs, it's better to set up a Rake task. Simply
-add the hanna format argument to your RDoc::Task options:
+For repeated generation of API docs, you can set up a Rake task. Set
+hanna as the RDoc generator:
 
-    gem 'rdoc'
     require 'rdoc/task'
     RDoc::Task.new do |rdoc|
       rdoc.generator = 'hanna'
-    end
-
-Tip: you can do this in the Rakefile of your Rails project before running
-`rake doc:rails`.
-
-Here is an example of a task for the {rdbi
-library}[http://github.com/rdbi/rdbi/tree/master/Rakefile]:
-
-    gem 'rdoc'
-    require 'rdoc/task'
-    RDoc::Task.new do |rdoc|
-      version = File.exist?('VERSION') ? File.read('VERSION') : ""
-
-      rdoc.generator = 'hanna'
-      rdoc.main = 'README.rdoc'
-      rdoc.rdoc_dir = 'rdoc'
-      rdoc.title = "RDBI #{version} Documentation"
-      rdoc.rdoc_files.include('README*')
-      rdoc.rdoc_files.include('lib/**/*.rb')
     end
 
 == Modification to RDoc
@@ -84,3 +46,18 @@ friendly documentation.  It changes label lists to use a table
 instead of a description list, since it is very difficult to
 get visually appealing styling for description lists without
 cutting corners (like using fixed widths).
+
+== Contributors
+
+The Hanna template was created by {Mislav}[http://mislav.uniqpath.com/] and
+since then has seen contributions from:
+
+1. {Tony Strauss}[http://github.com/DesigningPatterns], who participated from
+   the early start and made tons of fixes and enhancements to the template;
+2. {Hongli Lai}[http://blog.phusion.nl/] with the search filter for methods.
+3. {Erik Hollensbe}[http://github.com/erikh] a serious refactoring and up to
+   date with RDoc 2.5.x and 3.x, now named 'hanna-nouveau'.
+4. {James Tucker}[http://github.com/raggi] minor cleanups for Erik.
+5. {Jeremy Evans}[http://github.com/jeremyevans] RDoc 4 support, maintenance
+   since 2014.
+
