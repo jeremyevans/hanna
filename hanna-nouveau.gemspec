@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "hanna-nouveau"
-  s.version = File.read(File.expand_path("../VERSION", __FILE__))
+  s.version = '1.2.0'
   s.authors = ["Jeremy Evans", "Erik Hollensbe", "James Tucker", "Mislav Marohnic"]
   s.email = "code@jeremyevans.net"
   s.extra_rdoc_files = [
@@ -10,8 +10,6 @@ Gem::Specification.new do |s|
   s.files = [
     "LICENSE",
     "README.rdoc",
-    "Rakefile",
-    "VERSION",
     "lib/hanna-nouveau.rb",
     "lib/hanna-nouveau/template_files/class_index.erb",
     "lib/hanna-nouveau/template_files/file_index.erb",
