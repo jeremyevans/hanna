@@ -1,3 +1,5 @@
+# frozen-string-literal: true
+
 # = A better RDoc HTML template
 
 require 'pathname'
