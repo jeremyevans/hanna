@@ -201,24 +201,26 @@ class RDoc::Generator::Hanna
     CGI::escapeHTML(html.to_s)
   end
 
-  def render_class_tree(entries, parent=nil)
+  def render_class_tree(entries, prefix=nil)
     namespaces = { }
     out = String.new
 
     entries.sort.each do |klass|
-      next if namespaces[klass.full_name]
+      full_name = klass.full_name
+      next if namespaces[full_name]
 
-      text = if parent
-        "<span class=\"parent\">#{parent.full_name}::</span>#{klass.name}"
-      else
-        klass.name
-      end
+      text = prefix ? (prefix + klass.name) : klass.name
 
-      prefix = "#{klass.full_name}::"
-      subentries = @classes.select{|c| c.full_name.start_with?(prefix)}
+      class_prefix = "#{full_name}::"
+      subentries = @classes.select{|c| c.full_name.start_with?(class_prefix)}
       subentries.each { |x| namespaces[x.full_name] = true }
 
-      out << '<li>' << link_to(text, classfile(klass)) << "\n<ol>" << render_class_tree(subentries, klass) << "\n</ol></li>"
+      out <<
+        '<li>' <<
+        link_to(text, classfile(klass)) <<
+        "\n<ol>" <<
+        render_class_tree(subentries, "<span class=\"parent\">#{full_name}::</span>") <<
+        "\n</ol></li>"
     end
 
     out
