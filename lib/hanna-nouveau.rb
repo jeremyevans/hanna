@@ -201,9 +201,8 @@ class RDoc::Generator::Hanna
     CGI::escapeHTML(html.to_s)
   end
 
-  def render_class_tree(entries, prefix=nil)
+  def render_class_tree(entries, prefix=nil, out=String.new)
     namespaces = { }
-    out = String.new
 
     entries.sort.each do |klass|
       full_name = klass.full_name
@@ -215,12 +214,9 @@ class RDoc::Generator::Hanna
       subentries = @classes.select{|c| c.full_name.start_with?(class_prefix)}
       subentries.each { |x| namespaces[x.full_name] = true }
 
-      out <<
-        '<li>' <<
-        link_to(text, classfile(klass)) <<
-        "\n<ol>" <<
-        render_class_tree(subentries, "<span class=\"parent\">#{full_name}::</span>") <<
-        "\n</ol></li>"
+      out << '<li>' << link_to(text, classfile(klass)) << "\n<ol>"
+      render_class_tree(subentries, "<span class=\"parent\">#{full_name}::</span>", out)
+      out << "\n</ol></li>"
     end
 
     out
