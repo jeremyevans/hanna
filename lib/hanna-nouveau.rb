@@ -209,12 +209,13 @@ class RDoc::Generator::Hanna
       next if namespaces[klass.full_name]
 
       text = if parent
-        '<span class="parent">%s::</span>%s' % [parent.full_name, klass.name]
+        "<span class=\"parent\">#{parent.full_name}::</span>#{klass.name}"
       else
         klass.name
       end
 
-      subentries = @classes.select { |x| x.full_name[/^#{klass.full_name}::/] }
+      prefix = "#{klass.full_name}::"
+      subentries = @classes.select{|c| c.full_name.start_with?(prefix)}
       subentries.each { |x| namespaces[x.full_name] = true }
 
       out << '<li>' << link_to(text, classfile(klass)) << "\n<ol>" << render_class_tree(subentries, klass) << "\n</ol></li>"
