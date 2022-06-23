@@ -52,12 +52,12 @@ cutting corners (like using fixed widths).
 The Hanna template was created by {Mislav}[http://mislav.uniqpath.com/] and
 since then has seen contributions from:
 
-1. {Tony Strauss}[http://github.com/DesigningPatterns], who participated from
-   the early start and made tons of fixes and enhancements to the template;
-2. {Hongli Lai}[http://blog.phusion.nl/] with the search filter for methods.
-3. {Erik Hollensbe}[http://github.com/erikh] a serious refactoring and up to
+1. {Tony Strauss}[https://github.com/DesigningPatterns], who participated from
+   the early start and made tons of fixes and enhancements to the template.
+2. {Michael Granger}[https://github.com/ged] who maintained the original RDoc template.
+3. {Hongli Lai}[https://blog.phusion.nl/] with the search filter for methods.
+4. {Erik Hollensbe}[https://github.com/erikh] a serious refactoring and up to
    date with RDoc 2.5.x and 3.x, now named 'hanna-nouveau'.
-4. {James Tucker}[http://github.com/raggi] minor cleanups for Erik.
-5. {Jeremy Evans}[http://github.com/jeremyevans] RDoc 4 support, maintenance
-   since 2014.
-
+5. {James Tucker}[https://github.com/raggi] minor cleanups and RubyGems integration
+6. {Jeremy Evans}[https://github.com/jeremyevans] RDoc 4+ support, switch from
+   haml/sass to erb, maintenance since 2014.

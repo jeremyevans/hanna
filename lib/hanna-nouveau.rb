@@ -1,50 +1,13 @@
 # = A better RDoc HTML template
-#
-# Code rewritten by:
-#   Erik Hollensbe <erik@hollensbe.org>
-#
-# RubyGems integration properly done by:
-#   James Tucker (aka raggi)
-#
-# Original Authors:
-#   Mislav Marohnic <mislav.marohnic@gmail.com>
-#   Tony Strauss (http://github.com/DesigningPatterns)
-#   Michael Granger <ged@FaerieMUD.org>, who had maintained the original RDoc template
 
 require 'pathname'
 require 'erb'
+# :nocov:
 require 'rdoc/rdoc' unless defined?(RDoc::Markup::ToHtml)
+# :nocov:
 require 'rdoc/generator'
 
-class RDoc::Markup::ToHtml
-  LIST_TYPE_TO_HTML[:LABEL] = ['<table class="rdoc-list label-list"><tbody>', '</tbody></table>']
-  LIST_TYPE_TO_HTML[:NOTE]  = ['<table class="rdoc-list note-list"><tbody>',  '</tbody></table>']
-
-  alias list_item_start list_item_start
-  def list_item_start(list_item, list_type)
-    case list_type
-    when :BULLET, :LALPHA, :NUMBER, :UALPHA then
-      "<li>"
-    when :LABEL, :NOTE then
-      "<tr><td class='label'>#{Array(list_item.label).map{|label| to_html(label)}.join("<br />")}</td><td>"
-    else
-      raise RDoc::Error, "Invalid list type: #{list_type.inspect}"
-    end
-  end
-
-  alias list_end_for list_end_for
-  def list_end_for(list_type)
-    case list_type
-    when :BULLET, :LALPHA, :NUMBER, :UALPHA then
-      "</li>"
-    when :LABEL, :NOTE then
-      "</td></tr>"
-    else
-      raise RDoc::Error, "Invalid list type: #{list_type.inspect}"
-    end
-  end
-end
-
+# Hanna version of RDoc::Generator
 class RDoc::Generator::Hanna 
   STYLE            = 'styles.css'
   LAYOUT           = 'layout.erb'
@@ -72,11 +35,10 @@ class RDoc::Generator::Hanna
 
   DESCRIPTION = 'RDoc generator designed with simplicity, beauty and ease of browsing in mind'
 
-  # EPIC CUT AND PASTE TIEM NAO -- GG
   RDoc::RDoc.add_generator( self )
 
-  def self::for( options )
-    new( options )
+  class << self
+    alias for new
   end
 
   def initialize( store, options )
@@ -106,23 +68,14 @@ class RDoc::Generator::Hanna
     generate_indexes
     generate_class_files
     generate_file_files
-
-  rescue StandardError => err
-    p [ err.class.name, err.message, err.backtrace.join("\n  ") ]
-    raise
   end
 
   def write_static_files
     css_dir = outjoin('css')
-
-    unless File.directory?(css_dir)
-      FileUtils.mkdir css_dir
-    end
-
+    FileUtils.mkdir_p css_dir
     File.binwrite(File.join(css_dir, 'style.css'), File.read(templjoin(STYLE)))
   end
 
-  # FIXME refactor
   def generate_indexes
     @main_page_uri = @files.find { |f| f.name == @options.main_page }.path rescue ''
     File.binwrite(outjoin(INDEX_OUT), erb_template(templjoin(INDEX_PAGE)).to_html(binding))
@@ -149,7 +102,6 @@ class RDoc::Generator::Hanna
     file_page = erb_template(templjoin(FILE_PAGE))
     method_list_page = erb_template(templjoin(METHOD_LIST_PAGE))
 
-    # FIXME non-Ruby files
     @files.each do |file|
       path = Pathname.new(file.path)
       stylesheet = Pathname.new(STYLE_OUT).relative_path_from(path.dirname)
@@ -170,12 +122,8 @@ class RDoc::Generator::Hanna
         end
       end
 
-      # FIXME XXX sanity check
       dir = path.dirname
-      unless File.directory? dir
-        FileUtils.mkdir_p dir
-      end
-
+      FileUtils.mkdir_p dir
       File.binwrite(outjoin(file.path), result)
     end
   end
@@ -184,7 +132,6 @@ class RDoc::Generator::Hanna
     class_page       = erb_template(templjoin(CLASS_PAGE))
     method_list_page = erb_template(templjoin(METHOD_LIST_PAGE))
     sections_page    = erb_template(templjoin(SECTIONS_PAGE))
-    # FIXME refactor
 
     @classes.each do |klass|
       outfile = classfile(klass)
@@ -221,12 +168,8 @@ class RDoc::Generator::Hanna
         end
       end
 
-      # FIXME XXX sanity check
       dir = outfile.dirname
-      unless File.directory? dir
-        FileUtils.mkdir_p dir
-      end
-
+      FileUtils.mkdir_p dir
       File.binwrite(outfile, result)
     end
   end
@@ -236,20 +179,8 @@ class RDoc::Generator::Hanna
     layout.to_html(binding, :values => values) { yield }
   end
 
-  def sanitize_code_blocks(text)
-    text.gsub(/<pre>(.+?)<\/pre>/m) do
-      code = $1.sub(/^\s*\n/, '')
-      indent = code.gsub(/\n[ \t]*\n/, "\n").scan(/^ */).map{ |i| i.size }.min
-      code.gsub!(/^#{' ' * indent}/, '') if indent > 0
-
-        "<pre>#{code}</pre>"
-    end
-  end
-
-  # probably should bring in nokogiri/libxml2 to do this right.. not sure if
-  # it's worth it.
   def frame_link(content)
-    content.gsub(%r!<a href="http://[^>]*>!).each do |tag|
+    content.gsub(%r!<a[ \n]href="https?://[^>]*>!).each do |tag|
       a_tag, rest = tag.split(' ', 2)
       rest.gsub!(/target="[^"]*"/, '')
       a_tag + ' target="_top" ' + rest
@@ -268,7 +199,6 @@ class RDoc::Generator::Hanna
     CGI::escapeHTML(html.to_s)
   end
 
-  # XXX may my sins be not visited upon my sons.
   def render_class_tree(entries, parent=nil)
     namespaces = { }
 
@@ -280,45 +210,31 @@ class RDoc::Generator::Hanna
           text = klass.name
         end
 
-        if klass.document_self
-          out << '<li>'
-          out << link_to(text, classfile(klass))
-        end
+        out << '<li>'
+        out << link_to(text, classfile(klass))
 
         subentries = @classes.select { |x| x.full_name[/^#{klass.full_name}::/] }
         subentries.each { |x| namespaces[x.full_name] = true }
         out << "\n<ol>" + render_class_tree(subentries, klass) + "\n</ol>"
 
-        if klass.document_self
-          out << '</li>'
-        end
+        out << '</li>'
       end
 
       out
     end
   end
     
-  def link_to(text, url = nil, classname = nil)
-    class_attr = classname ? ' class="%s"' % classname : ''
-
-    if url
-        %[<a href="#{url}"#{class_attr}>#{text}</a>]
-    elsif classname
-        %[<span#{class_attr}>#{text}</span>]
-    else
-      text
-    end
+  def link_to(text, url)
+    %[<a href="#{url}">#{text}</a>]
   end
 
-  # +method_text+ is in the form of "ago (ActiveSupport::TimeWithZone)".
-  def link_to_method(entry, url = nil, classname = nil)
+  def link_to_method(entry, url)
     method_name = entry.pretty_name rescue entry.name
     module_name = entry.parent_name rescue entry.name
-    link_to %Q(<span class="method_name" value="#{entry.name}">#{h method_name}</span> <span class="module_name">(#{h module_name})</span>), url, classname
+    link_to %Q(<span class="method_name" value="#{entry.name}">#{h method_name}</span> <span class="module_name">(#{h module_name})</span>), url
   end
 
   def classfile(klass)
-    # FIXME sloooooooow
     Pathname.new(File.join(CLASS_DIR, klass.full_name.split('::')) + '.html')
   end
 
@@ -349,4 +265,31 @@ class RDoc::Generator::Hanna
   def erb_template(file)
     ERB.new(File.read(file))
   end
+
+  module LabelListTable
+    def list_item_start(list_item, list_type)
+      case list_type
+      when :LABEL, :NOTE
+        "<tr><td class='label'>#{Array(list_item.label).map{|label| to_html(label)}.join("<br />")}</td><td>"
+      else
+        super
+      end
+    end
+
+    def list_end_for(list_type)
+      case list_type
+      when :LABEL, :NOTE then
+        "</td></tr>"
+      else
+        super
+      end
+    end
+  end
 end 
+
+class RDoc::Markup::ToHtml
+  LIST_TYPE_TO_HTML[:LABEL] = ['<table class="rdoc-list label-list"><tbody>', '</tbody></table>']
+  LIST_TYPE_TO_HTML[:NOTE]  = ['<table class="rdoc-list note-list"><tbody>',  '</tbody></table>']
+
+  prepend RDoc::Generator::Hanna::LabelListTable
+end

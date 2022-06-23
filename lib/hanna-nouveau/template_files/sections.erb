@@ -57,7 +57,7 @@ values[:sections].sort_by{|s, h| s.title.to_s}.each do |section, h|
 <a name='<%=h attrib.aref %>'><%= attrib.name %></a>
 </td>
 <td class='context-item-value'><%= attrib.rw ? "[#{attrib.rw}]" : '&nbsp;' %></td>
-<td class='context-item-desc'><%= sanitize_code_blocks(attrib.description) %></td>
+<td class='context-item-desc'><%= attrib.description %></td>
 </tr>
 <%   end %></table>
 </div>
@@ -76,7 +76,7 @@ values[:sections].sort_by{|s, h| s.title.to_s}.each do |section, h|
 
 <%       end %></div>
 <%       if method.description %><div class='description'>
-<%= sanitize_code_blocks(method.description) %>
+<%= method.description %>
 </div>
 <%       end
          if method.markup_code

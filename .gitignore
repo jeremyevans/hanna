@@ -1,4 +1,4 @@
 /rdoc
-*.gem
-sample
-*.rbc
+/*.gem
+/test/rdoc
+/coverage
