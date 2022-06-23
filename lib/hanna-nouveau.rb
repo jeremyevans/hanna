@@ -201,27 +201,24 @@ class RDoc::Generator::Hanna
 
   def render_class_tree(entries, parent=nil)
     namespaces = { }
+    out = String.new
 
-    entries.sort.inject('') do |out, klass|
-      unless namespaces[klass.full_name]
-        if parent
-          text = '<span class="parent">%s::</span>%s' % [parent.full_name, klass.name]
-        else
-          text = klass.name
-        end
+    entries.sort.each do |klass|
+      next if namespaces[klass.full_name]
 
-        out << '<li>'
-        out << link_to(text, classfile(klass))
-
-        subentries = @classes.select { |x| x.full_name[/^#{klass.full_name}::/] }
-        subentries.each { |x| namespaces[x.full_name] = true }
-        out << "\n<ol>" + render_class_tree(subentries, klass) + "\n</ol>"
-
-        out << '</li>'
+      text = if parent
+        '<span class="parent">%s::</span>%s' % [parent.full_name, klass.name]
+      else
+        klass.name
       end
 
-      out
+      subentries = @classes.select { |x| x.full_name[/^#{klass.full_name}::/] }
+      subentries.each { |x| namespaces[x.full_name] = true }
+
+      out << '<li>' << link_to(text, classfile(klass)) << "\n<ol>" << render_class_tree(subentries, klass) << "\n</ol></li>"
     end
+
+    out
   end
     
   def link_to(text, url)
