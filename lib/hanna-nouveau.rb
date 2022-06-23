@@ -208,15 +208,22 @@ class RDoc::Generator::Hanna
       full_name = klass.full_name
       next if namespaces[full_name]
 
-      text = prefix ? (prefix + klass.name) : klass.name
-
       class_prefix = "#{full_name}::"
       subentries = @classes.select{|c| c.full_name.start_with?(class_prefix)}
       subentries.each { |x| namespaces[x.full_name] = true }
 
-      out << '<li>' << link_to(text, classfile(klass)) << "\n<ol>"
-      render_class_tree(subentries, "<span class=\"parent\">#{full_name}::</span>", out)
-      out << "\n</ol></li>"
+      text = prefix ? (prefix + klass.name) : klass.name
+      link = link_to(text, classfile(klass))
+
+      if subentries.empty?
+        out << "<span class=\"class-link\">" << link << "</span>\n"
+      else
+        out << '<details'
+        out << ' open' if full_name.count(':') == 0
+        out << '><summary>' << link << "</summary>\n"
+        render_class_tree(subentries, "<span class=\"parent\">#{full_name}::</span>", out)
+        out << "</details>"
+      end
     end
 
     out

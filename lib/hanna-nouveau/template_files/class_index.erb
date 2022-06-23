@@ -1,4 +1,4 @@
 <h1><%=h values[:list_title] %></h1>
-<ol class='classes' id='index-entries'>
+<div class='classes' id='index-entries'>
 <%= render_class_tree(values[:classes].select{|x| x.full_name !~ /::/}) %>
-</ol>
+</div>

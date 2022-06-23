@@ -75,35 +75,22 @@ END
 END
   end
 
-  it "should handle class index correctly" do
+  it "should use details/summary for class list" do
     t = File.binread('test/rdoc/fr_class_index.html')
-    t.scan(/(<\/?(?:ol|li)>|<a .*<\/a>)/).join("\n").must_equal(<<END.chomp)
-<li>
+    t.scan(/(<\/?(?:details(?: open)?|summary)>|<a .*<\/a>)/).join("\n").must_equal(<<END.chomp)
+<details open>
+<summary>
 <a href="classes/A.html">A</a>
-<ol>
-<li>
+</summary>
 <a href="classes/A/B.html"><span class="parent">A::</span>B</a>
-<ol>
-</ol>
-</li>
-<li>
 <a href="classes/A/F.html"><span class="parent">A::</span>F</a>
-<ol>
-</ol>
-</li>
-<li>
+<details>
+<summary>
 <a href="classes/A/G.html"><span class="parent">A::</span>G</a>
-<ol>
-<li>
+</summary>
 <a href="classes/A/G/H.html"><span class="parent">A::G::</span>H</a>
-<ol>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
+</details>
+</details>
 END
   end
 end
