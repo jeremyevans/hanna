@@ -1,0 +1,105 @@
+# 1.3.0 (2022-06-27)
+
+* Use details/summary for class index (jeremyevans)
+
+* Optimize render_class_tree, and avoid creation of O(n^2) regexps (jeremyevans)
+
+* Use target="_top" for https links as well as http links (jeremyevans)
+
+# 1.2.0 (2021-12-23)
+
+* Remove dependency on haml, by switching to stdlib erb (jeremyevans)
+
+* Remove use of prototype.js for the method index, switching to plain javascript (jeremyevans)
+
+# 1.1.0 (2021-12-15)
+
+* Remove dependency on sass, by converting the stylesheet to CSS (jeremyevans)
+
+* Avoid Ruby verbose mode warnings (jeremyevans)
+
+# 1.0.4 (2020-06-24)
+
+* Avoid whitespace between method name and argument list (jeremyevans)
+
+# 1.0.3 (2018-02-15)
+
+* Avoid using deprecated sass color operators (jeremyevans)
+
+# 1.0.2 (2017-07-01)
+
+* Handle documenting BasicObject (jeremyevans)
+
+# 1.0.1 (2016-10-12)
+
+* Remove unneeded and harmful target="docwin" from links (jeremyevans)
+
+# 1.0.0 (2016-09-21)
+
+* Support haml 4+ and rdoc 5+ (jeremyevans)
+
+* Remove no longer needed override of parseable? in rdoc (jeremyevans)
+
+# 0.4.2 (2014-11-26)
+
+* Use ruby's built-in syntax parser instead of parser gem to check for valid syntax (jeremyevans)
+
+# 0.4.1 (2014-08-29)
+
+* Update syntax highlighting color for comments and strings (jeremyevans)
+
+# 0.4.0 (2014-08-19)
+
+* Add parser as a dependency for checking for valid Ruby syntax (jeremyevans)
+
+* Use table instead of dl for better styling of label/note lists (jeremyevans)
+
+* Syntax highlight ruby code blocks, not just method source (jeremyevans)
+
+# 0.3.0 (2014-06-18)
+
+* Show superclass instead of parent for classes (Quintus, jeremyevans)
+
+* Add support for RDoc 4 (Atsushi Nagase, jeremyevans)
+
+# 0.2.7 (2013-03-23)
+
+* Remove duplicate entries from method index (jeremyevans)
+
+* Fix attribute links (jeremyevans)
+
+# 0.2.6 (2013-03-01)
+
+* Fix homepage in gem (erikh)
+
+# 0.2.5 (2013-03-01)
+
+* Restrict rdoc version in gem to ~> 3.1, since the gem doesn't work with RDoc 4 (jeremyevans)
+
+# 0.2.4 (2011-07-24)
+
+* Respect markup in section comments (jeremyevans)
+
+* Fix class/singleton attribute anchors (jeremyevans)
+
+* Work with RDoc 3.8+ (jeremyevans)
+
+* Support RDoc sections (jeremyevans)
+
+* Automatically link classes, modules, included modules, and attributes (jeremyevans)
+
+# 0.2.3 (2011-05-12)
+
+* Sort method, aliases, and attribute lists (jeremyevans)
+
+# 0.2.2 (2010-12-28)
+
+* Work with RDoc 3.1+ (erikh)
+
+# 0.2.1 (2010-12-23)
+
+* Rename internal files to hanna-nouveau (erikh)
+
+# 0.2.0 (2010-12-23)
+
+* Initial release
