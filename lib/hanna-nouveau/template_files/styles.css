@@ -245,7 +245,10 @@ div.header {
       white-space: normal; }
   #content table.rdoc-list {
     border-collapse: collapse;
-    border-spacing: 0; }
+    border-spacing: 0;
+    width: 100%;
+    overflow: auto;
+    display: block; }
     #content table.rdoc-list tr {
       background-color: white; }
       #content table.rdoc-list tr:nth-child(2n) {
