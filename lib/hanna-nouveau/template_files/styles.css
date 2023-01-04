@@ -169,7 +169,8 @@ div.header {
   border-bottom: 1px solid silver; }
   div.header .name {
     font-size: 1.6em;
-    font-family: Georgia, serif; }
+    font-family: Georgia, serif;
+    overflow-wrap: break-word; }
     div.header .name .type {
       color: #666666;
       font-size: 80%;
@@ -188,11 +189,9 @@ div.header {
 
 #content {
   padding: 12px 1rem; }
-  div.class #content {
-    position: relative;
-    width: 72%; }
   #content pre, #content .method .synopsis {
-    font: 14px Monaco, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace; }
+    font: 14px Monaco, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+    overflow-wrap: break-word; }
   #content pre {
     color: black;
     background: #eeeeee;
@@ -260,14 +259,12 @@ div.header {
       padding: 6px 13px; }
 
 #method-list {
-  position: absolute;
-  top: 0px;
-  right: -33%;
-  width: 28%;
+  max-height: 30rem;
   background: #eeeeee;
   border: 1px solid silver;
   padding: 0.4em 1%;
-  overflow: hidden; }
+  overflow-y: auto;
+  overflow-x: hidden; }
   #method-list h2 {
     font-size: 1.3em; }
   #method-list h3 {
@@ -288,6 +285,9 @@ div.header {
   font: small-caps 1.2em Georgia, serif;
   color: #444444;
   margin: 1em 0 0.2em 0; }
+
+.name-list, #class-list ol, #context ol {
+  overflow: auto; }
 
 #methods .method {
   border: 1px solid silver;
@@ -319,7 +319,6 @@ div.header {
 #content .method .source pre, #content pre.ruby, #methods .method .description pre.ruby {
   background: #262626;
   color: #ffdead;
-  margin: 1em;
   padding: 0.5em;
   border: 1px dashed #999999;
   overflow: auto; }
@@ -354,3 +353,16 @@ div.header {
   #content .method .source pre .ruby-value, #content pre.ruby .ruby-value, #methods .method .description pre.ruby .ruby-value {
     color: #7fffd4;
     background: transparent; }
+
+@media (min-width: 640px) {
+  div.class #content {
+    position: relative;
+    width: 72%; }
+
+  #method-list {
+    position: absolute;
+    top: 0px;
+    right: -33%;
+    width: 28%;
+  }
+}
