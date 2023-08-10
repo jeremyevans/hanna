@@ -1,3 +1,7 @@
+# master
+
+* Rename back to hanna, after mislav granted access to the name (jeremyevans)
+
 # 1.4.0 (2023-01-10)
 
 * Improve style for mobile devices (janko) (#18, #19)

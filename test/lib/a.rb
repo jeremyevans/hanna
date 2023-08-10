@@ -2,9 +2,9 @@
 #
 # * regular list
 #
-# http://github.com/jeremyevans/hanna-nouveau
+# http://github.com/jeremyevans/hanna
 #
-# https://github.com/jeremyevans/hanna-nouveau
+# https://github.com/jeremyevans/hanna
 class A
   module B
     def c

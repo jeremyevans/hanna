@@ -47,7 +47,7 @@ class RDoc::Generator::Hanna
     @options = options
     @store = store
 
-    @templatedir = Pathname.new File.expand_path('../hanna-nouveau/template_files', __FILE__)
+    @templatedir = Pathname.new File.expand_path('../hanna/template_files', __FILE__)
 
     @files      = nil
     @classes    = nil

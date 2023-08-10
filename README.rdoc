@@ -1,11 +1,11 @@
-= Hanna-nouveau
+= Hanna
 
-Hanna-nouveau is an RDoc generator built with simplicity, beauty
+Hanna is an RDoc generator built with simplicity, beauty
 and ease of browsing in mind.
 
 == Installation
 
-    gem install hanna-nouveau
+    gem install hanna
 
 == Usage
 
@@ -15,7 +15,7 @@ An alternative is to set the `RDOCOPT` environment variable:
 
     RDOCOPT="-f hanna"
 
-This will make RDoc always use hanna-nouveau unless it is explicitly overridden.
+This will make RDoc always use hanna unless it is explicitly overridden.
 
 == Integrating with RubyGems
 
