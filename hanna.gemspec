@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "hanna"
-  s.version = '1.4.0'
+  s.version = '1.5.0'
   s.authors = ["Jeremy Evans", "Erik Hollensbe", "James Tucker", "Mislav Marohnic"]
   s.email = "code@jeremyevans.net"
   s.extra_rdoc_files = [ "LICENSE", "README.rdoc", "CHANGELOG" ]
