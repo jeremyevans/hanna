@@ -1,4 +1,0 @@
-<h1><%=h values[:list_title] %></h1>
-<div class='classes' id='index-entries'>
-<%= render_class_tree(values[:classes].select{|x| x.full_name !~ /::/}) %>
-</div>
