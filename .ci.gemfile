@@ -4,3 +4,9 @@ gem 'rake'
 gem 'rdoc'
 gem 'minitest-hooks'
 gem 'minitest-global_expectations'
+
+platforms :jruby do
+  if RUBY_VERSION >= '2.6'
+    gem 'jar-dependencies', '0.4.1'
+  end
+end
