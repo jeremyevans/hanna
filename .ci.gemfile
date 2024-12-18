@@ -1,9 +1,14 @@
 source 'https://rubygems.org'
 
 gem 'rake'
-gem 'rdoc'
 gem 'minitest-hooks'
 gem 'minitest-global_expectations'
+
+if RUBY_VERSION <= '2.6'
+  gem 'rdoc', '<= 6.4'
+else
+  gem 'rdoc'
+end
 
 platforms :jruby do
   if RUBY_VERSION >= '2.6'
