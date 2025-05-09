@@ -1,13 +1,20 @@
 require "rake/clean"
 CLEAN.include ["rdoc", "*.gem", "coverage", "test/rdoc"]
 
-require "rdoc/task"
-RDoc::Task.new do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.generator = 'hanna'
-  rdoc.title = "hanna"
-  rdoc.options = ['--main', 'README.rdoc', '--title', 'Hanna: RDoc generator designed with simplicity, beauty and ease of browsing in mind']
-  rdoc.rdoc_files.add %w"README.rdoc LICENSE CHANGELOG lib"
+desc "Generate rdoc"
+task :rdoc do
+  rdoc_dir = "rdoc"
+  rdoc_opts = ["--line-numbers", "--inline-source", '--title', 'Hanna: RDoc generator designed with simplicity, beauty and ease of browsing in mind', '-f', 'hanna']
+
+  rdoc_opts.concat(['--main', 'README.rdoc', "-o", rdoc_dir] +
+    %w"README.rdoc CHANGELOG LICENSE" +
+    Dir["lib/**/*.rb"]
+  )
+
+  FileUtils.rm_rf(rdoc_dir)
+
+  require "rdoc"
+  RDoc::RDoc.new.document(rdoc_opts)
 end
 
 desc "Run tests"
