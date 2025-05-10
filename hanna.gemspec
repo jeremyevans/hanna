@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   }
 
   s.required_ruby_version = ">= 2.2"
-  s.add_dependency('rdoc', [">= 4"])
+  s.add_dependency('rdoc', [">= 4", "!= 6.13.0"])
   s.add_development_dependency('minitest-hooks')
   s.add_development_dependency('minitest-global_expectations')
 end

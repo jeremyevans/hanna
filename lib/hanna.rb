@@ -41,6 +41,14 @@ class RDoc::Generator::Hanna
 
   class << self
     alias for new
+
+    # :nocov:
+    # For RDoc >= 6.13.1
+    def setup_options(options)
+      options.class_module_path_prefix = CLASS_DIR if options.respond_to?(:class_module_path_prefix)
+      options.file_path_prefix = FILE_DIR if options.respond_to?(:file_path_prefix)
+    end
+    # :nocov:
   end
 
   def initialize( store, options )
@@ -189,6 +197,8 @@ class RDoc::Generator::Hanna
     end
   end
 
+  # :nocov:
+  # For RDoc < 6.13
   def class_dir
     CLASS_DIR
   end
@@ -196,6 +206,7 @@ class RDoc::Generator::Hanna
   def file_dir
     FILE_DIR
   end
+  # :nocov:
 
   def h(html)
     CGI::escapeHTML(html.to_s)

@@ -1,3 +1,7 @@
+# master
+
+* Fix usage with RDoc 6.13.1+ (no support for RDoc 6.13.0) (jeremyevans)
+
 # 1.5.0 (2023-08-10)
 
 * Rename back to hanna, after mislav granted access to the name (jeremyevans)
