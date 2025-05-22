@@ -12,6 +12,9 @@ end
 
 platforms :jruby do
   if RUBY_VERSION >= '2.6'
+    if RUBY_VERSION < '2.7'
+      gem 'erb', '< 4'
+    end
     gem 'jar-dependencies', '0.4.1'
   end
 end
