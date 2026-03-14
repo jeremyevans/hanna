@@ -4,6 +4,8 @@ gem 'rake'
 gem 'minitest-hooks'
 gem 'minitest-global_expectations'
 
+gem "psych", "= 3.0.2" if RUBY_VERSION[0..2] == "2.5"
+
 if RUBY_VERSION <= '2.7'
   gem 'rdoc', '< 6.4'
 else
