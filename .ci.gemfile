@@ -4,8 +4,8 @@ gem 'rake'
 gem 'minitest-hooks'
 gem 'minitest-global_expectations'
 
-if RUBY_VERSION <= '2.6'
-  gem 'rdoc', '<= 6.4'
+if RUBY_VERSION <= '2.7'
+  gem 'rdoc', '< 6.4'
 else
   gem 'rdoc'
 end
